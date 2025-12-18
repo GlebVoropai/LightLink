@@ -1,10 +1,12 @@
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: transparent;
-  background: #292929;
   color: #eee;
+  background: rgba(41, 41, 41, 0.966);
+  border-radius: 20px;
   margin: 0;
   padding: 0 20px;
+  backdrop-filter: blur(12px);          /* размытие заднего фона */
+  -webkit-backdrop-filter: blur(12px);  /* поддержка Safari */
 }
 
 h2 {
@@ -18,6 +20,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  justify-content: center;
 }
 
 .control {
@@ -26,14 +29,23 @@ h2 {
 
 .group {
   box-sizing: border-box;
-  background-color: #2e2e2e;
+  background: rgba(46, 46, 46, 0.4); /* полупрозрачный фон */
   padding: 20px;
   border-radius: 20px;
   width: 49%;
+  
+  border: 1px solid rgba(77, 77, 77, 0.15); /* лёгкая рамка для глубины */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.247);   /* мягкая тень */
 }
 
-.group-settings {
+/* .group.status {
   width: 100%;
+} */
+
+.group.status span {
+  color: #9b9b9b;
+}
+.group-settings {
   margin-top: 0;
 }
 

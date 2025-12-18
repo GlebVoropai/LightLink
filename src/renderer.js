@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const { hslToRgb } = require('./convert_color.js');
 const Store = require('electron-store').default;
 const store = new Store();
 
@@ -12,6 +13,9 @@ const recentContainer = document.getElementById('recentColors');
 const ledCountInput = document.getElementById('ledCount');
 const ipInput = document.getElementById('ipAddress');
 const portInput = document.getElementById('port');
+const connectionState = document.getElementById('connectionState');
+const rssiValue = document.getElementById('rssiValue');
+const uptimeEl = document.getElementById('uptime');
 
 // Загрузка сохранённых параметров
 let currentH = store.get('h', 180);
@@ -30,6 +34,7 @@ light.value = currentL;
 intervalSlider.value = currentInterval;
 intervalValue.textContent = currentInterval;
 
+
 // Обновление превью
 function updatePreview() {
   currentH = parseInt(hue.value);
@@ -41,10 +46,26 @@ function updatePreview() {
   document.documentElement.style.setProperty('--accent-color', `hsl(${currentH}, ${s}%, ${l}%)`);
 }
 
+// Обновление статуса устройства
+// слушаем статус от main.js 
+ipcRenderer.on('connection-status', (event, data) => { 
+  if (data.connected) { 
+    connectionState.textContent = "Подключено"; 
+    connectionState.style.color = "lime"; 
+  } else { 
+    connectionState.textContent = "Отключено"; 
+    connectionState.style.color = "red"; 
+  } 
+  if (data.rssi !== null) rssiValue.textContent = data.rssi; 
+  if (data.uptime !== null) uptimeEl.textContent = formatUptime(data.uptime); 
+});
+
 // Отправка цвета при движении
 [hue, sat, light].forEach(slider => {
   slider.addEventListener('input', () => {
     updatePreview();
+    const [r, g, b] = hslToRgb(currentH, currentS, currentL);
+    ipcRenderer.send('update-rgb', r, g, b);
     ipcRenderer.send('update-hsl', currentH, currentS, currentL);
   });
 });
@@ -74,6 +95,9 @@ function renderRecentColors() {
         sat.value = color.s;
         light.value = color.l;
         updatePreview();
+
+        const [r, g, b] = hslToRgb(color.h, color.s, color.l);
+        ipcRenderer.send('update-rgb', r, g, b);
         ipcRenderer.send('update-hsl', color.h, color.s, color.l);
       };
     } else {
@@ -93,6 +117,15 @@ function renderRecentColors() {
     ipcRenderer.send('update-udp-config');
   });
 });
+
+// Форматирование времени
+function formatUptime(seconds) { 
+  if (seconds == null) return ''; 
+  const hrs = Math.floor(seconds / 3600); 
+  const mins = Math.floor((seconds % 3600) / 60); 
+  const secs = seconds % 60; 
+  return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`; 
+}
 
 // Инициализация
 updatePreview();

@@ -8,6 +8,7 @@
 <body>
   <h2 id="title">LightLink</h2>
   <div class="main-container">
+    
     <div class="group">
       <div class="control">
         <label for="hue">Оттенок</label>
@@ -22,6 +23,7 @@
         <input id="light" type="range" min="0" max="1" step="0.01" value="0.5" class="slider">
       </div>
     </div>
+
     <div class="group">
       <div class="preview-container">
         <label for="preview">Предпросмотр цвета</label>
@@ -30,6 +32,35 @@
       <label for="recentColors">Недавно использованные цвета</label>
       <div id="recentColors"></div>
     </div>
+
+    <div class="group status">
+      <h2>Статус устройства</h2>
+      <div class="control">
+        <label>Состояние подключения:</label>
+        <span id="connectionState">Отключено</span>
+      </div>
+      <div class="control">
+        <label>Уровень сигнала (RSSI):</label>
+        <span id="rssiValue">—</span> dBm
+      </div>
+      <div class="control">
+        <label>Аптайм:</label>
+        <span id="uptime">—</span>
+      </div>
+      <div class="control">
+        <label>Пакеты получено:</label>
+        <span id="packetsReceived">0</span>
+      </div>
+      <div class="control">
+        <label>Пакеты потеряны:</label>
+        <span id="packetsLost">0</span>
+      </div>
+      <div class="control">
+        <label>Последнее обновление:</label>
+        <span id="lastUpdate">—</span>
+      </div>
+    </div>
+
     <div class="group group-settings">
       <details>
         <summary>Настройки</summary>

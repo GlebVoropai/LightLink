@@ -1,17 +1,20 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { hslToRgb } = require('./src/convert_color.js');
 const path = require('path');
-const { sendHSL, updateConfig } = require('./src/udp.js');
+const { sendRGB, updateConfig, isConnected, getRSSI, getUptime } = require('./src/udp.js');
 const Store = require('electron-store').default;
 const store = new Store();
 
 let win;
-let debugWin;
 let currentH = store.get('h', 180);
 let currentS = store.get('s', 0.5);
 let currentL = store.get('l', 0.5);
 let currentInterval = store.get('interval', 1000);
 let recentColors = store.get('recentColors', []);
 let sendTimer = null;
+
+// будем хранить последний RGB для автосендера
+let currentRGB = hslToRgb(currentH, currentS, currentL);
 
 // Инициализация параметров платы
 const LED_COUNT = store.get('ledCount', 60);
@@ -22,20 +25,31 @@ updateConfig({ LED_COUNT, IP, PORT });
 function startSending(interval) {
   if (sendTimer) clearTimeout(sendTimer);
   function loop() {
-    sendHSL(currentH, currentS, currentL);
+    sendRGB(...currentRGB);
     sendTimer = setTimeout(loop, interval);
   }
   loop();
 }
 
+setInterval(() => {
+  if (win && win.webContents) {
+    win.webContents.send('connection-status', { 
+      connected: isConnected(),
+      rssi: getRSSI(), 
+      uptime: getUptime()
+    }); 
+  } 
+}, 1000);
+
 app.whenReady().then(() => {
   win = new BrowserWindow({
-    width: 900,
-    height: 675,
-    // frame: false,
+    width: 1440,
+    height: 720,
+    frame: false,
     resizable: false,
-    backgroundColor: '#00000000',
-    visualEffectState: 'active',
+    transparent: true,
+    hasShadow: false,
+    visualEffectState: 'disabled',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -45,16 +59,21 @@ app.whenReady().then(() => {
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   Menu.setApplicationMenu(null);
 
-  startSending(currentInterval); // запуск отправки при старте
+  startSending(currentInterval);
 });
 
-// IPC: обновление цвета
+// IPC: обновление RGB
+ipcMain.on('update-rgb', (event, r, g, b) => {
+  currentRGB = [r, g, b];   // сохраняем последний цвет
+  sendRGB(r, g, b);         // сразу отправляем
+});
+
+// IPC: обновление HSL (только для сохранения истории)
 ipcMain.on('update-hsl', (event, h, s, l) => {
   currentH = h;
   currentS = s;
   currentL = l;
   store.set({ h, s, l });
-  sendHSL(h, s, l);
 });
 
 // IPC: обновление интервала
