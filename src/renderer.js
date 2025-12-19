@@ -34,7 +34,6 @@ light.value = currentL;
 intervalSlider.value = currentInterval;
 intervalValue.textContent = currentInterval;
 
-
 // Обновление превью
 function updatePreview() {
   currentH = parseInt(hue.value);
@@ -47,7 +46,22 @@ function updatePreview() {
 }
 
 // Обновление статуса устройства
-// слушаем статус от main.js 
+function updateWifiIcon(rssi) {
+  let bars = 0;
+  if (rssi > -50) bars = 5;
+  else if (rssi > -60) bars = 4;
+  else if (rssi > -70) bars = 3;
+  else if (rssi > -80) bars = 2;
+  else if (rssi > -90) bars = 1;
+  else bars = 0;
+
+  for (let i = 1; i <= 5; i++) {
+    const bar = document.getElementById(`wifi-bar-${i}`);
+    if (i <= bars) bar.classList.add('active');
+    else bar.classList.remove('active');
+  }
+}
+
 ipcRenderer.on('connection-status', (event, data) => { 
   if (data.connected) { 
     connectionState.textContent = "Подключено"; 
@@ -56,9 +70,17 @@ ipcRenderer.on('connection-status', (event, data) => {
     connectionState.textContent = "Отключено"; 
     connectionState.style.color = "red"; 
   } 
-  if (data.rssi !== null) rssiValue.textContent = data.rssi; 
-  if (data.uptime !== null) uptimeEl.textContent = formatUptime(data.uptime); 
+
+  if (data.rssi !== null) {
+    rssiValue.textContent = data.rssi + " dBm";
+    updateWifiIcon(data.rssi);
+  }
+
+  if (data.uptime !== null) {
+    uptimeEl.textContent = formatUptime(data.uptime);
+  }
 });
+
 
 // Отправка цвета при движении
 [hue, sat, light].forEach(slider => {
@@ -81,7 +103,7 @@ intervalSlider.addEventListener('input', () => {
 // Отображение недавних цветов
 function renderRecentColors() {
   recentContainer.innerHTML = '';
-  for (let i = 0; i < 36; i++) {
+  for (let i = 0; i < 30; i++) {
     const swatch = document.createElement('div');
     swatch.className = 'swatch';
 

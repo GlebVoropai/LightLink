@@ -43,7 +43,7 @@ setInterval(() => {
 
 app.whenReady().then(() => {
   win = new BrowserWindow({
-    width: 1440,
+    width: 640,
     height: 720,
     frame: false,
     resizable: false,
@@ -55,6 +55,8 @@ app.whenReady().then(() => {
       contextIsolation: false
     }
   });
+
+  win.webContents.openDevTools();
 
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   Menu.setApplicationMenu(null);
