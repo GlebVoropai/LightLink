@@ -35,16 +35,13 @@ h1 {
 
 .group.status .column {
   display: flex;
-}
-
-
-.group.status .column {
-  display: flex;
   gap: 10px;
+  width: 100%;
 }
 
 .status .column .control {
   margin-right: auto;
+  width: 50%;
 }
 
 .group.status span {
@@ -179,7 +176,6 @@ input[type="number"] {
   position: relative;
   list-style: none;
   cursor: pointer;
-  padding-right: 20px; 
   display: flex;
   align-items: center; 
 }
@@ -189,9 +185,10 @@ input[type="number"] {
 }
 
 .group.status summary::after {
+  position: absolute;
+  right: 0;
   content: "›"; 
   display: inline-block;
-  margin-left: auto; 
   transform: rotate(0deg);
   transition: transform 0.3s;
   font-size: 30px;

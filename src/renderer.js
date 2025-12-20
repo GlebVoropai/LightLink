@@ -74,10 +74,9 @@ function updateWifiIcon(rssi) {
 ipcRenderer.on('connection-status', (event, data) => { 
   if (data.connected) { 
     connectionState.textContent = "Подключено"; 
-    connectionState.style.color = "lime"; 
+    connectionState.style.color = "var(--accent-color)"; 
   } else { 
-    connectionState.textContent = "Отключено"; 
-    connectionState.style.color = "red"; 
+    connectionState.textContent = "Отключено";
   } 
 
   if (data.rssi !== null) {
