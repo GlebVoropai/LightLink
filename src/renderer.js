@@ -111,7 +111,7 @@ intervalSlider.addEventListener('input', () => {
 // Отображение недавних цветов
 function renderRecentColors() {
   recentContainer.innerHTML = '';
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 30; i++) {
     const swatch = document.createElement('div');
     swatch.className = 'swatch';
     swatch.tabIndex = 0;

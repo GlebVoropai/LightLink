@@ -20,7 +20,7 @@ h1 {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 15px;
   justify-content: center;
 }
 
@@ -59,7 +59,7 @@ h1 {
 /* === Формы и элементы управления === */
 label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   font-size: 0.95em;
 }
 
@@ -221,10 +221,9 @@ input[type="number"] {
 }
 
 #recentColors {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-  gap: 6px;
-  margin-top: 12px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 .swatch {
