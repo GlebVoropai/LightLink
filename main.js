@@ -78,6 +78,16 @@ ipcMain.on('update-hsl', (event, h, s, l) => {
   store.set({ h, s, l });
 });
 
+// обработчики IPC кнопки панели
+ipcMain.on('window-minimize', () => {
+  if (win) win.minimize();
+});
+
+ipcMain.on('window-close', () => {
+  if (win) win.close();
+});
+
+
 // IPC: обновление интервала
 ipcMain.on('update-interval', (event, interval) => {
   currentInterval = interval;

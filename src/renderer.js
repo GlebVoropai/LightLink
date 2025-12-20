@@ -34,6 +34,15 @@ light.value = currentL;
 intervalSlider.value = currentInterval;
 intervalValue.textContent = currentInterval;
 
+document.getElementById('min-btn').addEventListener('click', () => {
+  ipcRenderer.send('window-minimize');
+});
+
+document.getElementById('close-btn').addEventListener('click', () => {
+  ipcRenderer.send('window-close');
+});
+
+
 // Обновление превью
 function updatePreview() {
   currentH = parseInt(hue.value);
@@ -103,9 +112,19 @@ intervalSlider.addEventListener('input', () => {
 // Отображение недавних цветов
 function renderRecentColors() {
   recentContainer.innerHTML = '';
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 28; i++) {
     const swatch = document.createElement('div');
     swatch.className = 'swatch';
+    swatch.tabIndex = 0;
+    swatch.setAttribute('role', 'button');
+
+    swatch.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        swatch.click();
+      }
+    });
+
 
     const color = recentColors[i];
     if (color) {

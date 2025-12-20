@@ -2,7 +2,7 @@
 body {
   font-family: 'Segoe UI', sans-serif;
   color: #eee;
-  background: rgba(41, 41, 41, 0.9);
+  background: rgb(14 14 14 / 90%);
   border-radius: 20px;
   margin: 0;
   padding: 0 20px 20px 20px;
@@ -26,7 +26,7 @@ h1 {
 
 .group {
   box-sizing: border-box;
-  background: rgba(46, 46, 46, 0.8);
+  background: rgb(24 24 24 / 80%);
   padding: 20px;
   border-radius: 20px;
   border: 1px solid rgba(77, 77, 77, 0.15);
@@ -70,7 +70,7 @@ input[type="range"] {
   width: 100%;
   height: 10px;
   border-radius: 6px;
-  background: #434343;
+  background: #000;
   outline: none;
   -webkit-appearance: none;
 }
@@ -103,15 +103,22 @@ input[type="number"] {
   font-size: 14px;
   color: #eee;
   background-color: transparent;
-  border: 1px solid #444;
+  border: 1px solid #000000;
   border-radius: 10px;
   outline: none;
+  transition: 0.3s;
 }
 
+button:focus,
 input[type="text"]:focus,
 input[type="number"]:focus {
-  border-color: var(--accent-color);
+  border: 1px solid var(--accent-color) !important;
   outline: 0;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover {
+  background-color: #292929;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -137,7 +144,7 @@ input[type="number"] {
 .window-controls button {
   width: 28px;
   height: 28px;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 4px;
   color: #eee;
   cursor: pointer;
@@ -159,6 +166,11 @@ input[type="number"] {
   background-color: #292929;
 }
 
+.group.status:has(summary:focus-visible) {
+  background-color: #292929;
+  border: 1px solid var(--accent-color);
+}
+
 .group.status details {
   cursor: pointer;
 }
@@ -167,29 +179,33 @@ input[type="number"] {
   position: relative;
   list-style: none;
   cursor: pointer;
-  padding-right: 20px; /* место для стрелки */
+  padding-right: 20px; 
   display: flex;
-  align-items: center; /* выравнивание по центру */
+  align-items: center; 
+}
+
+.group.status summary:focus {
+  outline: none;
 }
 
 .group.status summary::after {
-  content: "›"; /* стрелка вправо */
+  content: "›"; 
   display: inline-block;
-  margin-left: auto; /* прижать вправо */
+  margin-left: auto; 
   transform: rotate(0deg);
   transition: transform 0.3s;
   font-size: 30px;
-  line-height: 1;          /* убираем смещение вниз */
-  vertical-align: middle;  /* центрируем по строке */
+  line-height: 1;         
+  vertical-align: middle;
   color: var(--accent-color);
 }
 
 .group.status details[open] summary::after {
-  transform: rotate(90deg); /* вниз при раскрытии */
+  transform: rotate(90deg);
 }
 
 .group.status summary::-webkit-details-marker {
-  display: none; /* скрываем маркер в Chrome/Safari */
+  display: none; 
 }
 
 .group.status details[open] summary {
@@ -224,6 +240,11 @@ input[type="number"] {
 
 .swatch:hover {
   transform: scale(1.1);
+}
+
+.swatch:focus {
+  transform: scale(1.1);
+  outline: none;
 }
 
 /* === Скроллбар === */
