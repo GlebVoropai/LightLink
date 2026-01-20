@@ -11,8 +11,8 @@
     <div class="drag-region"></div>
   </div>
   <div class="window-controls">
-    <button id="min-btn">—</button>
-    <button id="close-btn">⨉</button>
+    <button id="min-btn" title="Свернуть в трей">—</button>
+    <button id="close-btn" title="Закрыть">⨉</button>
   </div>
 
   <div class="main-container">
@@ -109,6 +109,12 @@
           <span id="intervalValue">100</span> мс
         </label>
         <input id="interval" type="range" min="10" max="1999" step="1" value="100" class="slider">
+      </div>
+      <div class="control">
+        <label>
+          <input type="checkbox" id="startInTray">
+          Запускать свернутым в трей
+        </label>
       </div>
     </div>
 

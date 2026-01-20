@@ -16,6 +16,7 @@ const portInput = document.getElementById('port');
 const connectionState = document.getElementById('connectionState');
 const rssiValue = document.getElementById('rssiValue');
 const uptimeEl = document.getElementById('uptime');
+const startInTrayCheckbox = document.getElementById('startInTray');
 
 // Загрузка сохранённых параметров
 let currentH = store.get('h', 180);
@@ -89,6 +90,14 @@ ipcRenderer.on('connection-status', (event, data) => {
   }
 });
 
+//проверка состояния чекбокса трея
+ipcRenderer.invoke('get-start-in-tray').then(value => {
+  startInTrayCheckbox.checked = value;
+});
+
+startInTrayCheckbox.addEventListener('change', () => {
+  ipcRenderer.send('set-start-in-tray', startInTrayCheckbox.checked);
+});
 
 // Отправка цвета при движении
 [hue, sat, light].forEach(slider => {
