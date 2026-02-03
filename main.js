@@ -67,9 +67,11 @@ app.whenReady().then(() => {
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   Menu.setApplicationMenu(null);
 
-  const trayIcon = nativeImage.createFromPath(
-    path.join(__dirname, 'assets', 'icon.ico') // положи иконку сюда
-  );
+  const iconPath = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets', 'icon.ico')
+    : path.join(__dirname, 'assets', 'icon.ico');
+
+  const trayIcon = nativeImage.createFromPath(iconPath);
 
   tray = new Tray(trayIcon);
   tray.setToolTip('LED Controller');

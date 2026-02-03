@@ -30,6 +30,12 @@
       "udp.js",
       "src/**/*"
     ],
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ],
     "win": {
       "target": "portable",
       "icon": "assets/icon.ico",
