@@ -1,65 +1,73 @@
+/* === Базовые стили страницы === */
 body {
   font-family: 'Segoe UI', sans-serif;
   color: #eee;
-  background: rgba(41, 41, 41, 0.966);
+  background: rgb(14 14 14 / 90%);
   border-radius: 20px;
   margin: 0;
-  padding: 0 20px;
-  backdrop-filter: blur(12px);          /* размытие заднего фона */
-  -webkit-backdrop-filter: blur(12px);  /* поддержка Safari */
+  padding: 0 20px 20px 20px;
 }
 
-h2 {
+h1 {
   font-size: 1.8em;
   margin: 10px;
   color: var(--accent-color);
   text-shadow: var(--accent-color) 1px 0 1px;
 }
 
+/* === Контейнеры и группы === */
 .main-container {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 15px;
   justify-content: center;
+}
+
+.group {
+  box-sizing: border-box;
+  background: rgb(24 24 24 / 80%);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(77, 77, 77, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.247);
+}
+
+.group.status .column {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.status .column .control {
+  margin-right: auto;
+  width: 50%;
+}
+
+.group.status span {
+  color: #9b9b9b;
+}
+
+.group-settings {
+  margin-top: 0;
 }
 
 .control {
   margin-bottom: 20px;
 }
 
-.group {
-  box-sizing: border-box;
-  background: rgba(46, 46, 46, 0.4); /* полупрозрачный фон */
-  padding: 20px;
-  border-radius: 20px;
-  width: 49%;
-  
-  border: 1px solid rgba(77, 77, 77, 0.15); /* лёгкая рамка для глубины */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.247);   /* мягкая тень */
-}
-
-/* .group.status {
-  width: 100%;
-} */
-
-.group.status span {
-  color: #9b9b9b;
-}
-.group-settings {
-  margin-top: 0;
-}
-
+/* === Формы и элементы управления === */
 label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   font-size: 0.95em;
 }
 
 input[type="range"] {
   width: 100%;
-  height: 10px; /* было 8px */
+  height: 10px;
   border-radius: 6px;
-  background: #434343;
+  background: #000;
   outline: none;
   -webkit-appearance: none;
 }
@@ -83,22 +91,126 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
 
-button {
+
+input[type="text"],
+input[type="number"] {
+  box-sizing: border-box;
   width: 100%;
-  padding: 14px 24px;
-  font-size: 1em;
-  background: #444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #eee;
+  background-color: transparent;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  outline: none;
   transition: 0.3s;
 }
 
-button:hover {
+button:focus,
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border: 1px solid var(--accent-color) !important;
+  outline: 0;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover {
+  background-color: #292929;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* === Кнопки === */
+
+.window-controls {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.window-controls button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #eee;
+  cursor: pointer;
+  transition: 0.3s;
+  background: transparent;
+  -webkit-app-region: no-drag;
+}
+
+.window-controls button:hover {
   background: var(--accent-color);
 }
 
+/* === Summary === */
+.group.status {
+  transition: 0.3s;
+}
+
+.group.status:hover {
+  background-color: #292929;
+}
+
+.group.status:has(summary:focus-visible) {
+  background-color: #292929;
+  border: 1px solid var(--accent-color);
+}
+
+.group.status details {
+  cursor: pointer;
+}
+
+.group.status summary {
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center; 
+}
+
+.group.status summary:focus {
+  outline: none;
+}
+
+.group.status summary::after {
+  position: absolute;
+  right: 0;
+  content: "›"; 
+  display: inline-block;
+  transform: rotate(0deg);
+  transition: transform 0.3s;
+  font-size: 30px;
+  line-height: 1;         
+  vertical-align: middle;
+  color: var(--accent-color);
+}
+
+.group.status details[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.group.status summary::-webkit-details-marker {
+  display: none; 
+}
+
+.group.status details[open] summary {
+  margin-bottom: 12px;
+}
+
+
+/* === Превью и недавние цвета === */
 #preview {
   width: 100%;
   height: 60px;
@@ -109,10 +221,9 @@ button:hover {
 }
 
 #recentColors {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-  gap: 6px;
-  margin-top: 12px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 .swatch {
@@ -120,69 +231,75 @@ button:hover {
   height: 32px;
   border-radius: 12px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-details[open] summary {
-  margin-bottom: 20px;
+.swatch:hover {
+  transform: scale(1.1);
 }
 
-summary {
-  cursor: pointer;
-}
-
-input[type="text"],
-input[type="number"] {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 6px 10px;
-  font-size: 14px;
-  color: #eee;
-  background-color: transparent;
-  border: 1px solid #444;
-  border-radius: 10px;
+.swatch:focus {
+  transform: scale(1.1);
   outline: none;
 }
 
-input[type="text"]:focus,
-input[type="number"]:focus {
-  border-color: 1px solid var(--accent-color);
-  outline: 0;
-} 
-
-summary:focus {
-  outline: none;
-  border-color: 1px solid var(--accent-color);
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-/* Общий стиль скроллбара */
+/* === Скроллбар === */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
 
-/* Трек (фон) */
 ::-webkit-scrollbar-track {
   background: #292929;
   border-radius: 4px;
 }
 
-/* Ползунок */
 ::-webkit-scrollbar-thumb {
   background: var(--accent-color);
   border-radius: 4px;
-  
 }
 
-/* При наведении */
 ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
+}
+
+/* === Drag-панель === */
+.drag-region {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;              
+  -webkit-app-region: drag;  
+  background: transparent;   
+}
+
+/* === Иконка WI-FI === */
+.wifi-icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 24px;
+}
+
+.wifi-icon .bar {
+  width: 6px;
+  background: #444;          /* неактивный цвет */
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+#wifi-bar-1 { height: 6px; }
+#wifi-bar-2 { height: 10px; }
+#wifi-bar-3 { height: 14px; }
+#wifi-bar-4 { height: 18px; }
+#wifi-bar-5 { height: 22px; }
+
+.wifi-icon .bar.active {
+  background: var(--accent-color); /* активный цвет */
+}
+
+/* === Переменные состояния === */
+.hidden {
+  display: none;
 }

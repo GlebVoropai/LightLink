@@ -16,6 +16,7 @@ const portInput = document.getElementById('port');
 const connectionState = document.getElementById('connectionState');
 const rssiValue = document.getElementById('rssiValue');
 const uptimeEl = document.getElementById('uptime');
+const startInTrayCheckbox = document.getElementById('startInTray');
 
 // Загрузка сохранённых параметров
 let currentH = store.get('h', 180);
@@ -34,6 +35,14 @@ light.value = currentL;
 intervalSlider.value = currentInterval;
 intervalValue.textContent = currentInterval;
 
+document.getElementById('min-btn').addEventListener('click', () => {
+  ipcRenderer.send('window-minimize');
+});
+
+document.getElementById('close-btn').addEventListener('click', () => {
+  ipcRenderer.send('window-close');
+});
+
 
 // Обновление превью
 function updatePreview() {
@@ -47,17 +56,47 @@ function updatePreview() {
 }
 
 // Обновление статуса устройства
-// слушаем статус от main.js 
+function updateWifiIcon(rssi) {
+  let bars = 0;
+  if (rssi > -50) bars = 5;
+  else if (rssi > -60) bars = 4;
+  else if (rssi > -70) bars = 3;
+  else if (rssi > -80) bars = 2;
+  else if (rssi > -90) bars = 1;
+  else bars = 0;
+
+  for (let i = 1; i <= 5; i++) {
+    const bar = document.getElementById(`wifi-bar-${i}`);
+    if (i <= bars) bar.classList.add('active');
+    else bar.classList.remove('active');
+  }
+}
+
 ipcRenderer.on('connection-status', (event, data) => { 
   if (data.connected) { 
     connectionState.textContent = "Подключено"; 
-    connectionState.style.color = "lime"; 
+    connectionState.style.color = "var(--accent-color)"; 
   } else { 
-    connectionState.textContent = "Отключено"; 
-    connectionState.style.color = "red"; 
+    connectionState.textContent = "Отключено";
   } 
-  if (data.rssi !== null) rssiValue.textContent = data.rssi; 
-  if (data.uptime !== null) uptimeEl.textContent = formatUptime(data.uptime); 
+
+  if (data.rssi !== null) {
+    rssiValue.textContent = data.rssi + " dBm";
+    updateWifiIcon(data.rssi);
+  }
+
+  if (data.uptime !== null) {
+    uptimeEl.textContent = formatUptime(data.uptime);
+  }
+});
+
+//проверка состояния чекбокса трея
+ipcRenderer.invoke('get-start-in-tray').then(value => {
+  startInTrayCheckbox.checked = value;
+});
+
+startInTrayCheckbox.addEventListener('change', () => {
+  ipcRenderer.send('set-start-in-tray', startInTrayCheckbox.checked);
 });
 
 // Отправка цвета при движении
@@ -81,9 +120,19 @@ intervalSlider.addEventListener('input', () => {
 // Отображение недавних цветов
 function renderRecentColors() {
   recentContainer.innerHTML = '';
-  for (let i = 0; i < 36; i++) {
+  for (let i = 0; i < 30; i++) {
     const swatch = document.createElement('div');
     swatch.className = 'swatch';
+    swatch.tabIndex = 0;
+    swatch.setAttribute('role', 'button');
+
+    swatch.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        swatch.click();
+      }
+    });
+
 
     const color = recentColors[i];
     if (color) {

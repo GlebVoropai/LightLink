@@ -11,7 +11,7 @@ let currentUptime = null;
 let lastPacketTime = null;
 
 client.on('message', (msg) => {
-  console.log("UDP packet:", msg.toString());
+  // console.log("UDP packet:", msg.toString());
   const parts = msg.toString().trim().split(';');
   currentRSSI = parseInt(parts[0], 10);
   currentUptime = parseInt(parts[1], 10);

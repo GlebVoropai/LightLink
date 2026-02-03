@@ -6,10 +6,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2 id="title">LightLink</h2>
+  <h1 id="title">LightLink</h1>
+  <div class="drag-container">
+    <div class="drag-region"></div>
+  </div>
+  <div class="window-controls">
+    <button id="min-btn" title="Свернуть в трей">—</button>
+    <button id="close-btn" title="Закрыть">⨉</button>
+  </div>
+
   <div class="main-container">
-    
-    <div class="group">
+
+    <div class="group preview-block">
+      <div class="preview-container">
+        <label for="preview">Предпросмотр цвета</label>
+        <div id="preview"></div>
+      </div>
+      <label for="recentColors">Недавно использованные цвета</label>
+      <div id="recentColors"></div>
+    </div>
+
+    <div class="group color">
       <div class="control">
         <label for="hue">Оттенок</label>
         <input id="hue" type="range" min="0" max="360" value="180" class="slider">
@@ -24,66 +41,83 @@
       </div>
     </div>
 
-    <div class="group">
-      <div class="preview-container">
-        <label for="preview">Предпросмотр цвета</label>
-        <div id="preview"></div>
-      </div>
-      <label for="recentColors">Недавно использованные цвета</label>
-      <div id="recentColors"></div>
-    </div>
-
     <div class="group status">
-      <h2>Статус устройства</h2>
-      <div class="control">
-        <label>Состояние подключения:</label>
-        <span id="connectionState">Отключено</span>
-      </div>
-      <div class="control">
-        <label>Уровень сигнала (RSSI):</label>
-        <span id="rssiValue">—</span> dBm
-      </div>
-      <div class="control">
-        <label>Аптайм:</label>
-        <span id="uptime">—</span>
-      </div>
-      <div class="control">
-        <label>Пакеты получено:</label>
-        <span id="packetsReceived">0</span>
-      </div>
-      <div class="control">
-        <label>Пакеты потеряны:</label>
-        <span id="packetsLost">0</span>
-      </div>
-      <div class="control">
-        <label>Последнее обновление:</label>
-        <span id="lastUpdate">—</span>
-      </div>
-    </div>
+      <details title="Подробнее о Статусе">
+        <summary>
+          <div class="column">
+            <div class="control">
+              <label>Состояние подключения:</label>
+              <span id="connectionState">Отключено</span>
+            </div>
+            <div class="control">
+              <label>Уровень сигнала:</label>
+              <div class="wifi-icon">
+                <span class="bar" id="wifi-bar-1"></span>
+                <span class="bar" id="wifi-bar-2"></span>
+                <span class="bar" id="wifi-bar-3"></span>
+                <span class="bar" id="wifi-bar-4"></span>
+                <span class="bar" id="wifi-bar-5"></span>
+              </div>
+            </div>
+          </div>
+        </summary>
 
-    <div class="group group-settings">
-      <details>
-        <summary>Настройки</summary>
-        <div class="settings-body control">
+        <!-- Дополнительная информация -->
+        <div class="column">
           <div class="control">
-            <label for="ledCount">Число светодиодов</label>
-            <input type="number" id="ledCount" min="1" max="300">
+            <label>RSSI:</label>
+            <span id="rssiValue">—</span> dBm
           </div>
           <div class="control">
-            <label for="ipAddress">IP-адрес</label>
-            <input type="text" id="ipAddress" placeholder="IP-адрес платы, например: 192.168.1.1">
+            <label>Аптайм:</label>
+            <span id="uptime">—</span>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="control">
+            <label>Получено пакетов:</label>
+            <span id="packetsReceived">0</span>
           </div>
           <div class="control">
-            <label for="port">UDP-порт</label>
-            <input type="number" id="port" min="1" max="65535" placeholder="Порт, установленный в прошивке платы">
-          </div>
-          <div class="control">
-            <label for="interval">Скорость обновления цвета: <span id="intervalValue">100</span><span> мс</span></label>
-            <input id="interval" type="range" min="10" max="1999" step="1" value="100" class="slider">
+            <label>Потеряно пакетов:</label>
+            <span id="packetsLost">0</span>
           </div>
         </div>
       </details>
     </div>
+
+
+
+
+
+    <div class="group settings">
+      <div class="control">
+        <label for="ledCount">Число светодиодов:</label>
+        <input type="number" id="ledCount" min="1" max="300">
+      </div>
+      <div class="control">
+        <label for="ipAddress">IP‑адрес:</label>
+        <input type="text" id="ipAddress" placeholder="например: 192.168.1.1">
+      </div>
+      <div class="control">
+        <label for="port">UDP‑порт:</label>
+        <input type="number" id="port" min="1" max="65535" placeholder="порт из прошивки платы">
+      </div>
+      <div class="control">
+        <label for="interval">Скорость обновления цвета: 
+          <span id="intervalValue">100</span> мс
+        </label>
+        <input id="interval" type="range" min="10" max="1999" step="1" value="100" class="slider">
+      </div>
+      <div class="control">
+        <label>
+          <input type="checkbox" id="startInTray">
+          Запускать свернутым в трей
+        </label>
+      </div>
+    </div>
+
   </div>
   <script src="renderer.js"></script>
 </body>

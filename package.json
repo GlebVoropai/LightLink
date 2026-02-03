@@ -1,11 +1,11 @@
 {
   "name": "lightlink",
   "version": "0.1.0",
-  "description": "Minimalistic HSL lightning control software for ESP8266/ESP32",
+  "description": "Minimalistic HSL lighting control software for ESP8266/ESP32",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder --win portable"
   },
   "author": "mockingbird",
   "license": "MIT",
@@ -27,13 +27,19 @@
     },
     "files": [
       "main.js",
-      ".udp.js",
+      "udp.js",
       "src/**/*"
     ],
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ],
     "win": {
-      "target": "dir",
-      "icon": "assets/icon.ico"
-    },
-    "forceCodeSigning": false
+      "target": "portable",
+      "icon": "assets/icon.ico",
+      "forceCodeSigning": false
+    }
   }
 }
