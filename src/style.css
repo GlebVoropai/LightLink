@@ -2,17 +2,16 @@
 body {
   font-family: 'Segoe UI', sans-serif;
   color: #eee;
-  background: rgb(14 14 14 / 90%);
-  border-radius: 20px;
+  background: #0e0e0ee6;
+  /* border-radius: 20px; */
   margin: 0;
-  padding: 0 20px 20px 20px;
+  padding: 55px 20px 20px 20px;
 }
 
-h1 {
+#title {
   font-size: 1.8em;
-  margin: 10px;
+  margin: 0;
   color: var(--accent-color);
-  text-shadow: var(--accent-color) 1px 0 1px;
 }
 
 /* === Контейнеры и группы === */
@@ -24,11 +23,26 @@ h1 {
   justify-content: center;
 }
 
+.header {
+  width: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0;
+  box-sizing: border-box;
+  padding: 5px 20px;
+  -webkit-app-region: drag;
+  transition: 0.5s;
+}
+
+.header.scrolled {
+  background: #0e0e0e;
+}
+
 .group {
   box-sizing: border-box;
-  background: rgb(24 24 24 / 80%);
+  background: #292929bd;
   padding: 20px;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   border: 1px solid rgba(77, 77, 77, 0.15);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.247);
 }
@@ -66,7 +80,7 @@ label {
 input[type="range"] {
   width: 100%;
   height: 10px;
-  border-radius: 6px;
+  /* border-radius: 6px; */
   background: #000;
   outline: none;
   -webkit-appearance: none;
@@ -79,9 +93,9 @@ input[type="range"]:focus {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
+  width: 8px;
   height: 18px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   background: var(--accent-color);
   cursor: pointer;
   transition: transform 0.3s;
@@ -101,7 +115,7 @@ input[type="number"] {
   color: #eee;
   background-color: transparent;
   border: 1px solid #000000;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   outline: none;
   transition: 0.3s;
 }
@@ -142,7 +156,7 @@ input[type="number"] {
   width: 28px;
   height: 28px;
   border: 1px solid transparent;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   color: #eee;
   cursor: pointer;
   transition: 0.3s;
@@ -214,7 +228,7 @@ input[type="number"] {
 #preview {
   width: 100%;
   height: 60px;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   margin: 20px 0;
   background: var(--accent-color);
   box-shadow: 0px 0px 10px 0px var(--accent-color);
@@ -229,7 +243,7 @@ input[type="number"] {
 .swatch {
   width: 32px;
   height: 32px;
-  border-radius: 12px;
+  /* border-radius: 12px; */
   cursor: pointer;
   transition: 0.3s;
 }
@@ -251,27 +265,16 @@ input[type="number"] {
 
 ::-webkit-scrollbar-track {
   background: #292929;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--accent-color);
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
-}
-
-/* === Drag-панель === */
-.drag-region {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;              
-  -webkit-app-region: drag;  
-  background: transparent;   
 }
 
 /* === Иконка WI-FI === */
@@ -285,7 +288,7 @@ input[type="number"] {
 .wifi-icon .bar {
   width: 6px;
   background: #444;          /* неактивный цвет */
-  border-radius: 2px;
+  /* border-radius: 2px; */
   transition: 0.3s;
 }
 

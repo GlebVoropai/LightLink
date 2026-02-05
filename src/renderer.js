@@ -17,6 +17,7 @@ const connectionState = document.getElementById('connectionState');
 const rssiValue = document.getElementById('rssiValue');
 const uptimeEl = document.getElementById('uptime');
 const startInTrayCheckbox = document.getElementById('startInTray');
+const header = document.querySelector('.header');
 
 // Загрузка сохранённых параметров
 let currentH = store.get('h', 180);
@@ -175,6 +176,15 @@ function formatUptime(seconds) {
   const secs = seconds % 60; 
   return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`; 
 }
+
+//Окраска тайтлбара при скролле 
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 0) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
 
 // Инициализация
 updatePreview();

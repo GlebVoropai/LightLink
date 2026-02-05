@@ -62,7 +62,7 @@ app.whenReady().then(() => {
   if (startInTray) {
     win.setSkipTaskbar(true);
   }
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   Menu.setApplicationMenu(null);
